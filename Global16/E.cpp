@@ -11,59 +11,57 @@ typedef long long ll;
 #define IOS ios::sync_with_stdio(false);cin.tie(0);cout.tie(0)
 const int INF = 0x3f3f3f3f;
 const int maxn = 2e5+5;
-vector<int> pre[maxn];
+int dp[maxn];
 vector<int> v[maxn];
-int book[maxn],dp[maxn],book2[maxn];
-int ans,n;
-bool flag;
-void dfs(int now){
-    if(!flag) return;
-    if(book[now]) return;
-    book[now] = 1;
-    if(pre[now].size() == 0) dp[now] = 1;
-    rep(i,0,pre[now].size()){
-        int nxt = pre[now][i];
-        if(book2[nxt]){
-            flag = 0;
-            return;
-        }
-        book2[nxt] = 1;
-        dfs(nxt);
-        book2[nxt] = 0;
-        if(nxt < now) dp[now] = max(dp[now],dp[nxt]);
-        else dp[now] = max(dp[now],dp[nxt]+1);
+int ans;
+void dfs1(int now,int last){
+    if(v[now].size()==1 && now!=1){
+        ans++;
+        return;
     }
+    rep(i,0,v[now].size()){
+        int nxt = v[now][i];
+        if(nxt==last) continue;
+        dfs1(nxt,now);
+    }
+}
+void dfs(int now,int last){
+    rep(i,0,v[now].size()){
+        int nxt = v[now][i];
+        if(nxt==last) continue;
+        dfs(nxt,now);
+    }
+    dp[now] = 1;
+    int cnt = 0;
+    rep(i,0,v[now].size()){
+        int nxt = v[now][i];
+        if(nxt==last) continue;
+        if(dp[nxt]==1){
+            dp[now] = 0;
+        }else ans--;
+        cnt++;
+    }
+    if(dp[now] && cnt) ans++;
 }
 int main(){
     IOS;
-    int k,num;
+    int n,l,r;
     CAS {
         cin>>n;
-        Rep(i,1,n) pre[i].clear();
-        Rep(i,1,n) book[i] = dp[i] = 0;
         ans = 0;
-        Rep(i,1,n){
-            cin>>k;
-            while(k--){
-                cin>>num;
-                pre[i].push_back(num);
-                v[i].push_back(num);
-                v[num].push_back(i);
-            }
+        Rep(i,1,n) v[i].clear(),dp[i] = 0;
+        Rep(i,1,n-1){
+            cin>>l>>r;
+            v[l].push_back(r);
+            v[r].push_back(l);
         }
-        flag = 1;
-        Rep(i,1,n){
-            book2[i] = 1;
-            dfs(i);
-            book2[i] = 0;
-        }
-        Rep(i,1,n) if(!book[i]) flag = 0;
-        Rep(i,1,n) ans = max(dp[i],ans);
-        if(flag) cout<<ans<<"\n";
-        else cout<<"-1\n";
+        dfs1(1,-1);
+        dfs(1,-1);
+        cout<<ans<<"\n";
     }
     return 0;
 }
+
 //                    _ooOoo_
 //                   o8888888o
 //                   88" . "88

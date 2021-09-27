@@ -1,21 +1,51 @@
 #include<bits/stdc++.h>
 using namespace std;
-#define CAS int CASE;  \
-            cin>>CASE; \
-            while(CASE--)
-#define YON if(flag) cout<<"YES\n"; \
-            else cout<<"NO\n";
-#define Rep(i,x,y) for(int i=(x);i<=(y);i++)
-#define rep(i,x,y) for(int i=(x);i<(y);i++)
-#define Dep(i,x,y) for(int i=(x);i>=(y);i--)
-#define dep(i,x,y) for(int i=(x);i>(y);i--)
+
+#define ll long long
+#define lf double
+#define CAS int cas;cin>>cas;while(cas--)
 #define IOS ios::sync_with_stdio(false);cin.tie(0);cout.tie(0)
-typedef long long ll;
-const double PI = acos(-1.0);
-const int INF = 0x3f3f3f3f;
+#define Rep(i,l,r) for(int i=(l);i<=(r);i++)
+#define rep(i,l,r) for(int i=(l);i<(r);i++)
+#define Dep(i,l,r) for(int i=(r);i>=(l);i++)
+#define dep(i,l,r) for(int i=(r);i>(l);i++)
+const int maxn = 1e5+5;
+priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> q;
+set<int> s;
+vector<int> ans;
+pair<int,int> a[maxn];
 
-int main(){
-    IOS;
-
+int main() {
+    int n,k;
+    int at,pt;
+    cin>>n>>k;
+    rep(i,0,n) s.insert(i);
+    rep(i,0,n) a[i].second = i;
+    rep(now,0,k){
+        cin>>at>>pt;
+        while(!q.empty()){
+            pair<int,int> p = q.top();
+            if(p.first >= at) break;
+            q.pop();
+            s.insert(p.second);
+        }
+        if(s.empty()) continue;
+        auto index = s.lower_bound(now%n);
+        if(index == s.end()) index = s.begin();
+        q.push({*index,at+pt});
+        a[*index].first++;
+        s.erase(index);
+    }
+    sort(a,a+n);
+    int MAX = a[n-1].first;
+    Dep(i,n-1,0){
+        if(a[i].first<MAX) break;
+        ans.push_back(a[i].second);
+    }
+    sort(ans.begin(),ans.end());
+    rep(i,0,ans.size()){
+        cout<<ans[i];
+        if(i!=ans.size()-1) cout<<" ";
+    }
     return 0;
 }

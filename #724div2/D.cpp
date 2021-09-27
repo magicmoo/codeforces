@@ -13,27 +13,36 @@ using namespace std;
 typedef long long ll;
 const double PI = acos(-1.0);
 const int INF = 0x3f3f3f3f;
-const int maxn = 2005;
+const int maxn = 2e5+5;
 int a[maxn];
-int dp[maxn][maxn];
+set<int> s;
 int main(){
     IOS;
-    int n,k;
+    int n;
     CAS {
-        cin>>n>>k;
+        cin>>n;
         Rep(i,1,n) cin>>a[i];
-        int ans = INF;
-        Rep(i,1,n){
-            Rep(j,1,i){
-                if(a[i] == j) dp[i][j] = dp[i-1][j-1]+1;
-                else dp[i][j] = max(dp[i-1][j-1],dp[i-1][j]);
+        bool flag = 1;
+        s.clear();
+        s.insert(a[1]);
+        Rep(i,2,n){
+            s.insert(a[i]);
+            auto index = s.lower_bound(a[i-1]);
+            if(a[i]>a[i-1]){
+                index++;
+                if(*index != a[i]){
+                    flag = 0;
+                    break;
+                }
+            }else if(a[i]<a[i-1]){
+                index--;
+                if(*index != a[i]){
+                    flag = 0;
+                    break;
+                }
             }
         }
-        Rep(j,1,n){
-            if(dp[n][j] >= k) ans = min(ans,n-j);
-        }
-        if(ans == INF) cout<<"-1\n";
-        else cout<<ans<<"\n";
+        YON;
     }
     return 0;
 }

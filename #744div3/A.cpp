@@ -16,6 +16,18 @@ const int INF = 0x3f3f3f3f;
 
 int main(){
     IOS;
-    
+    int n;
+    string str;
+    CAS {
+        cin>>str;
+        int a=0,b=0,c=0;
+        rep(i,0,str.size()){
+            if(str[i]=='A') a++;
+            if(str[i]=='B') b++;
+            if(str[i]=='C') c++;
+        }
+        if(b==a+c) cout<<"YES\n";
+        else cout<<"NO\n";
+    }
     return 0;
 }

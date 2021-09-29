@@ -13,9 +13,26 @@ using namespace std;
 typedef long long ll;
 const double PI = acos(-1.0);
 const int INF = 0x3f3f3f3f;
-
+const int maxn = 1e6+5;
+int a[maxn];
+int dp[maxn];
+int n,d;
+vector<int> v;
+void init(){
+    int now = 0;
+    while(now != 0){
+        now = (now+n-d)%n;
+        v.push_back(now);
+    }
+}
 int main(){
     IOS;
-    
+    CAS {
+        cin>>n>>d;
+        rep(i,0,n) cin>>a[i];
+        int g = __gcd(n,d);
+        v.clear();
+        init();
+    }
     return 0;
 }

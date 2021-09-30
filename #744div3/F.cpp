@@ -15,24 +15,44 @@ const double PI = acos(-1.0);
 const int INF = 0x3f3f3f3f;
 const int maxn = 1e6+5;
 int a[maxn];
-int dp[maxn];
+int book[maxn],book2[maxn];
 int n,d;
 vector<int> v;
-void init(){
-    int now = 0;
-    while(now != 0){
+int find(int now){
+    while(!book2[now]){
+        if(a[now] == 0) return now;
+        book2[now] = 1;
         now = (now+n-d)%n;
-        v.push_back(now);
     }
+    return -1;
 }
 int main(){
     IOS;
     CAS {
         cin>>n>>d;
         rep(i,0,n) cin>>a[i];
+        rep(i,0,n) book2[i] = book[i] = 0;
         int g = __gcd(n,d);
         v.clear();
-        init();
+        int ans = 0;
+        bool flag = 1;
+        rep(i,0,n){
+            if(book[i]) continue;
+            int now = find(i);
+            if(now == -1){
+                flag = 0;
+                break;
+            }
+            int cnt = 0;
+            while(!book[now]){
+                book[now] = 1;
+                if(a[now]==0) cnt = 0;
+                else ans = max(ans,++cnt);
+                now = (now+n-d)%n;
+            }
+        }
+        if(flag) cout<<ans<<"\n";
+        else cout<<"-1\n";
     }
     return 0;
 }

@@ -13,27 +13,26 @@ using namespace std;
 typedef long long ll;
 const double PI = acos(-1.0);
 const int INF = 0x3f3f3f3f;
-const int maxn = 2005;
-int a[maxn];
-int dp[maxn][maxn];
+const int maxn = 105;
+struct Node{
+    int num,id;
+}a[maxn];
+bool cmp(Node n1,Node n2){
+    return n1.num < n2.num;
+}
 int main(){
     IOS;
-    int n,k;
+    int n;
     CAS {
-        cin>>n>>k;
-        Rep(i,1,n) cin>>a[i];
-        int ans = INF;
-        Rep(i,1,n){
-            Rep(j,1,i){
-                if(a[i] == j) dp[i][j] = dp[i-1][j-1]+1;
-                else dp[i][j] = max(dp[i-1][j-1],dp[i-1][j]);
-            }
+        cin>>n;
+        Rep(i,1,n) cin>>a[i].num;
+        Rep(i,1,n) a[i].id = i;
+        sort(a+1,a+1+n,cmp);
+        if(a[1].num != a[2].num){
+            cout<<a[1].id<<"\n";
+        }else{
+            cout<<a[n].id<<"\n";
         }
-        Rep(j,1,n){
-            if(dp[n][j] >= k) ans = min(ans,n-j);
-        }
-        if(ans == INF) cout<<"-1\n";
-        else cout<<ans<<"\n";
     }
     return 0;
 }

@@ -13,34 +13,18 @@ using namespace std;
 typedef long long ll;
 const double PI = acos(-1.0);
 const int INF = 0x3f3f3f3f;
-const int maxn = 2e5+5;
+const int maxn = 1e3+5;
 int a[maxn];
-set<int> s;
 int main(){
     IOS;
     int n;
     CAS {
         cin>>n;
         Rep(i,1,n) cin>>a[i];
-        bool flag = 1;
-        s.clear();
-        s.insert(a[1]);
+        sort(a+1,a+1+n);
+        bool flag = 0;
         Rep(i,2,n){
-            s.insert(a[i]);
-            auto index = s.lower_bound(a[i-1]);
-            if(a[i]>a[i-1]){
-                index++;
-                if(*index != a[i]){
-                    flag = 0;
-                    break;
-                }
-            }else if(a[i]<a[i-1]){
-                index--;
-                if(*index != a[i]){
-                    flag = 0;
-                    break;
-                }
-            }
+            if(a[i]==a[i-1]) flag = 1;
         }
         YON;
     }

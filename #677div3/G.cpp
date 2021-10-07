@@ -28,12 +28,12 @@ struct Dijkstra
             return dis>b.dis;
         }
     };
- 
+
     priority_queue<Int>q;
     list<EDGE>node[maxn];
     int dis[maxn];
     int vis[maxn];
- 
+
     void init(int n){
         Rep(i,1,n){dis[i]=INF;}
         Rep(i,1,n) vis[i] = 0;
@@ -59,7 +59,7 @@ struct Dijkstra
             }
         }
     }
- 
+
 };
 Dijkstra a;
 struct Node{
@@ -70,7 +70,6 @@ int dis[maxn][maxn];
 int main(){
     IOS;
     int n,m,k,l,r,w;
-    a.init(n);
     cin>>n>>m>>k;
     Rep(i,1,m){
         cin>>l>>r>>w;

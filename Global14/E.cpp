@@ -35,7 +35,7 @@ int main(){
         dp[i][i] = cnt[i-1];
         Rep(j,1,i){
             Rep(k,1,j-1){
-                dp[i][j] += (dp[i-k-1][j-k]*cnt[k-1]*C[j][k])%m;
+                if(i-k-1 >= j-k) dp[i][j] += (dp[i-k-1][j-k]*cnt[k-1]%m*C[j][k])%m;
                 dp[i][j] %= m;
             }
         }

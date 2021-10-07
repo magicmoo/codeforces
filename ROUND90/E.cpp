@@ -83,7 +83,20 @@ int main(){
         cin>>n>>k;
         bool flag = 0;
         ll cnt = INF;
+<<<<<<< HEAD
+        ll now = 9;
+        ll num = n-k*(k+1)/2;
+        if(num>=0 && num%(k+1)==0){
+            ll ans = num/(k+1);
+            ans = solve(ans,9-k,0);
+            if(ans!=-1){
+                cnt = min(cnt,ans);
+                flag = 1;
+            }
+        }
+=======
         ll now = 99;
+>>>>>>> cfddb953762c7216ccb8bf29c2fe869489363a85
         Rep(time,0,15){
             Rep(i,1,k){
                 ll num = n-k*(k+1)/2+i*now;
@@ -91,7 +104,11 @@ int main(){
                 if(num%(k+1)!=0) continue;
                 ll ans = num/(k+1);
                 if(ans>n) break;
+<<<<<<< HEAD
+                if((ans+k-i)<now) continue;
+=======
                 if(i!=0 && ans<now) continue;
+>>>>>>> cfddb953762c7216ccb8bf29c2fe869489363a85
                 if(i==0){
                     ans = solve(ans,9-k,time);
                     if(ans!=-1 && ans>=now){

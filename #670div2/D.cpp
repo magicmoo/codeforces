@@ -16,9 +16,9 @@ const ll INF = 0x3f3f3f3f;
 const ll maxn = 1e2+5;
 ll a[maxn],b[maxn],c[maxn],n;
 namespace ST{
-    int a[maxn];   //原数组
+    ll a[maxn];   //原数组
 struct node{
-    int l,r;
+    ll l,r;
     ll s,lazy;
     void update(ll k){
         s+=(r-l+1)*k;
@@ -26,18 +26,18 @@ struct node{
     }
 }tree[4*maxn];
 
-void push_down(int id){
+void push_down(ll id){
     if(tree[id].lazy){
         tree[id*2].update(tree[id].lazy);
         tree[id*2+1].update(tree[id].lazy);
         tree[id].lazy=0;
     }
 }
-void push_up(int id)
+void push_up(ll id)
 {
     tree[id].s=tree[id*2].s+tree[id*2+1].s;
 }
-void build(int id,int l,int r){
+void build(ll id,ll l,ll r){
     tree[id].l=l;
     tree[id].r=r;
     tree[id].lazy = 0;
@@ -45,13 +45,13 @@ void build(int id,int l,int r){
         tree[id].s=a[l];
         return;
     }
-    int mid=(l+r)/2;
+    ll mid=(l+r)/2;
     build(id*2,l,mid);
     build(id*2+1,mid+1,r);
     push_up(id);
 }
-void update(int id,int l,int r,int k){
-    int L=tree[id].l,R=tree[id].r;
+void update(ll id,ll l,ll r,ll k){
+    ll L=tree[id].l,R=tree[id].r;
     if(R<l||L>r)
         return;
     if(l<=L&&R<=r){
@@ -65,8 +65,8 @@ void update(int id,int l,int r,int k){
         update(id*2+1,l,r,k);
     push_up(id);
 }
-ll query(int id,int l,int r){
-    int L=tree[id].l,R=tree[id].r;
+ll query(ll id,ll l,ll r){
+    ll L=tree[id].l,R=tree[id].r;
     ll res=0;
     if(R<l||L>r)
         return 0;
@@ -112,10 +112,20 @@ int main(){
     }
     cout<<(b[n]+c[1]+1)/2<<"\n";
     cin>>q;
+    ll dis = b[n];
     Rep(i,1,n) ST::a[i] = a[i];
+    ST::build(1,1,n);
     while(q--){
         cin>>l>>r>>w;
-        
+        ST::update(1,l,r,w);
+        if(w>=0){
+            if(l-1>0) dis += min(w,max(ST::query(1,l,l)-ST::query(1,l-1,l-1),0LL));
+            if(r+1<=n) dis -= max(w,max(ST::query(1,r+1,r+1)-ST::query(1,r,r),0LL));
+        }else{
+            if(l-1>0) dis -= max(-w,max(ST::query(1,l,l)-ST::query(1,l-1,l-1),0LL));
+            if(r+1<=n) dis += min(w,max(ST::query(1,r+1,r+1)-ST::query(1,r,r),0LL));
+        }
+        cout<<(dis+ST::query(1,1,1)+1)/2<<"\n";
     }
     return 0;
 }

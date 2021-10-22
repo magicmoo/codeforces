@@ -13,7 +13,7 @@ using namespace std;
 typedef long long ll;
 const double PI = acos(-1.0);
 const ll INF = 0x3f3f3f3f;
-const ll maxn = 1e2+5;
+const ll maxn = 1e5+5;
 ll a[maxn],b[maxn],c[maxn],n;
 namespace ST{
     ll a[maxn];   //原数组
@@ -110,22 +110,29 @@ int main(){
             b[i] += dis;
         }
     }
-    cout<<(b[n]+c[1]+1)/2<<"\n";
+    ll ans = (b[n]+c[1])/2;
+    if(ans>0 && (b[n]+c[1])%2 != 0) ans++;
+    cout<<ans<<"\n";
     cin>>q;
     ll dis = b[n];
     Rep(i,1,n) ST::a[i] = a[i];
     ST::build(1,1,n);
     while(q--){
-        cin>>l>>r>>w;
+        cin>>l>>r>>w;   
+        if(w>=0){
+            if(r+1<=n) dis -= min(w,max(0LL,ST::query(1,r+1,r+1)-ST::query(1,r,r)));
+        }else{
+            if(l-1>0) dis -= min(-w,max(0LL,ST::query(1,l,l)-ST::query(1,l-1,l-1)));
+        }
         ST::update(1,l,r,w);
         if(w>=0){
             if(l-1>0) dis += min(w,max(ST::query(1,l,l)-ST::query(1,l-1,l-1),0LL));
-            if(r+1<=n) dis -= max(w,max(ST::query(1,r+1,r+1)-ST::query(1,r,r),0LL));
         }else{
-            if(l-1>0) dis -= max(-w,max(ST::query(1,l,l)-ST::query(1,l-1,l-1),0LL));
-            if(r+1<=n) dis += min(w,max(ST::query(1,r+1,r+1)-ST::query(1,r,r),0LL));
+            if(r+1<=n) dis += min(-w,max(ST::query(1,r+1,r+1)-ST::query(1,r,r),0LL));
         }
-        cout<<(dis+ST::query(1,1,1)+1)/2<<"\n";
+        ll ans = (dis+ST::query(1,1,1))/2;
+        if(ans>0 && (dis+ST::query(1,1,1))%2 != 0) ans++;
+        cout<<ans<<"\n";
     }
     return 0;
 }

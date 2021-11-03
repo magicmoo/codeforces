@@ -1,8 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
-#define CAS ll CASE;  \
+#define CAS int CASE;  \
             cin>>CASE; \
-            Rep(__,1,CASE)
+            while(CASE--)
 #define YON if(flag) cout<<"YES\n"; \
             else cout<<"NO\n";
 #define Rep(i,x,y) for(int i=(x);i<=(y);i++)
@@ -16,6 +16,21 @@ const int INF = 0x3f3f3f3f;
 
 int main(){
     IOS;
-
+    string str;
+    CAS {
+        cin>>str;
+        int ans = INF;
+        int num = 0;
+        rep(i,0,str.size()){
+            if(ans > str[i]-'a') num = i;
+            ans = min(ans,str[i]-'a');
+        }
+        cout<<(char)('a'+ans)<<" ";
+        rep(i,0,str.size()){
+            if(num == i) continue;
+            cout<<str[i];
+        }
+        cout<<"\n";
+    }
     return 0;
 }

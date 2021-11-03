@@ -1,8 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
-#define CAS int CASE;  \
+#define CAS ll CASE;  \
             cin>>CASE; \
-            while(CASE--)
+            Rep(__,1,CASE)
 #define YON if(flag) cout<<"YES\n"; \
             else cout<<"NO\n";
 #define Rep(i,x,y) for(int i=(x);i<=(y);i++)

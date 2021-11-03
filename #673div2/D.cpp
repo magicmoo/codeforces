@@ -13,36 +13,42 @@ using namespace std;
 typedef long long ll;
 const double PI = acos(-1.0);
 const int INF = 0x3f3f3f3f;
-const int maxn = 505;
-int a[maxn],b[maxn];
-map<pair<int,int>,int> s;
+const int maxn = 1e4+5;
+int a[maxn];
+struct Node{
+    int a,b,c;
+};
+vector<Node> ans;
 int main(){
     IOS;
     int n;
     CAS {
         cin>>n;
+        ans.clear();
         Rep(i,1,n) cin>>a[i];
-        Rep(i,1,n) cin>>b[i];
-        if(n%2==1 && a[n/2+1]!=b[n/2+1]){
-            cout<<"NO\n";
+        int sum = 0;
+        Rep(i,1,n) sum += a[i];
+        if(sum%n != 0){
+            cout<<"-1\n";
             continue;
         }
-        s.clear();
-        Rep(i,1,n/2){
-            s[{a[i],a[n-i+1]}]++;
-        }
+        sum /= n;
         bool flag = 1;
-        Rep(i,1,n/2){
-            if(s[{b[i],b[n-i+1]}]){
-                s[{b[i],b[n-i+1]}]--;
-            }else if(s[{b[n-i+1],b[i]}]){
-                s[{b[n-i+1],b[i]}]--;
+        Rep(i,2,n){
+            if(a[i]%i==0){
+                ans.push_back({i,1,a[i]/i});
             }else{
-                flag = 0;
-                break;
+                ans.push_back({1,i,i-a[i]%i});
+                ans.push_back({i,1,a[i]/i+1});
             }
         }
-        YON;
+        Rep(i,2,n){
+            ans.push_back({1,i,sum});
+        }
+        cout<<ans.size()<<"\n";
+        rep(i,0,ans.size()){
+            cout<<ans[i].a<<" "<<ans[i].b<<" "<<ans[i].c<<"\n";
+        }
     }
     return 0;
 }

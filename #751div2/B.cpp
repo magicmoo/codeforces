@@ -13,36 +13,30 @@ using namespace std;
 typedef long long ll;
 const double PI = acos(-1.0);
 const int INF = 0x3f3f3f3f;
-const int maxn = 505;
-int a[maxn],b[maxn];
-map<pair<int,int>,int> s;
+const int maxn = 2e3+5;
+int a[maxn],cnt[maxn],tmp[maxn],ans[maxn][maxn];
 int main(){
     IOS;
-    int n;
+    int n,q,x,k;
     CAS {
         cin>>n;
+        Rep(i,1,n) cnt[i] = 0;
         Rep(i,1,n) cin>>a[i];
-        Rep(i,1,n) cin>>b[i];
-        if(n%2==1 && a[n/2+1]!=b[n/2+1]){
-            cout<<"NO\n";
-            continue;
+        Rep(i,1,n) cnt[a[i]]++;
+        Rep(i,1,n) ans[0][i] = a[i];
+        int now = 1;
+        while(now<=n){
+            Rep(i,1,n) ans[now][i] = cnt[ans[now-1][i]];
+            Rep(i,1,n) tmp[i] = cnt[i],cnt[i] = 0;
+            Rep(i,1,n) cnt[tmp[i]] += tmp[i];
+            now++;
         }
-        s.clear();
-        Rep(i,1,n/2){
-            s[{a[i],a[n-i+1]}]++;
+        cin>>q;
+        while(q--){
+            cin>>x>>k;
+            if(k<=n) cout<<ans[k][x]<<"\n";
+            else cout<<ans[n][x]<<"\n";
         }
-        bool flag = 1;
-        Rep(i,1,n/2){
-            if(s[{b[i],b[n-i+1]}]){
-                s[{b[i],b[n-i+1]}]--;
-            }else if(s[{b[n-i+1],b[i]}]){
-                s[{b[n-i+1],b[i]}]--;
-            }else{
-                flag = 0;
-                break;
-            }
-        }
-        YON;
     }
     return 0;
 }

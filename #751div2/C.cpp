@@ -13,36 +13,31 @@ using namespace std;
 typedef long long ll;
 const double PI = acos(-1.0);
 const int INF = 0x3f3f3f3f;
-const int maxn = 505;
-int a[maxn],b[maxn];
-map<pair<int,int>,int> s;
+const int maxn = 2e5+5;
+int a[maxn],cnt[40];
+vector<int> ans;
 int main(){
     IOS;
     int n;
     CAS {
         cin>>n;
+        ans.clear();
+        Rep(i,0,30) cnt[i] = 0;
         Rep(i,1,n) cin>>a[i];
-        Rep(i,1,n) cin>>b[i];
-        if(n%2==1 && a[n/2+1]!=b[n/2+1]){
-            cout<<"NO\n";
-            continue;
-        }
-        s.clear();
-        Rep(i,1,n/2){
-            s[{a[i],a[n-i+1]}]++;
-        }
-        bool flag = 1;
-        Rep(i,1,n/2){
-            if(s[{b[i],b[n-i+1]}]){
-                s[{b[i],b[n-i+1]}]--;
-            }else if(s[{b[n-i+1],b[i]}]){
-                s[{b[n-i+1],b[i]}]--;
-            }else{
-                flag = 0;
-                break;
+        Rep(i,1,n){
+            Rep(j,0,30){
+                if(((a[i]>>j)&1) == 1) cnt[j]++;
             }
         }
-        YON;
+        Rep(i,1,n){
+            bool flag = 1;
+            Rep(j,0,30){
+                if(cnt[j]%i != 0) flag = 0;
+            }
+            if(flag) ans.push_back(i);
+        }
+        rep(i,0,ans.size()) cout<<ans[i]<<" ";
+        cout<<"\n";
     }
     return 0;
 }

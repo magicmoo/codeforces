@@ -23,18 +23,19 @@ int main(){
         int n = strlen(a+1),m = strlen(b+1);
         memset(dp,0,sizeof(dp));
         bool flag = 0;
-        Rep(i,1,n) dp[0][0][i] = i-1;
+        Rep(i,1,m) dp[0][0][i] = i-1;
         Rep(now,1,n){
             Rep(i,0,m){
-                Rep(j,i,m){
-                    // if(dp[0][i][j]<j-1) continue;
-                    if(i+1<j && a[now]==b[i+1]) dp[1][i+1][j] = max(dp[1][i+1][j],dp[0][i][j]);
-                    if(dp[0][i][j]<=m && a[now]==b[dp[0][i][j]+1]) dp[1][i][j] = max(dp[1][i][j],dp[0][i][j]+1);
+                Rep(j,max(1,i),m){
+                    if(i>0 && a[now]==b[i]) dp[1][i][j] = max(dp[1][i][j],dp[0][i-1][j]);
+                    if(dp[0][i][j]<m && a[now]==b[dp[0][i][j]+1]) dp[1][i][j] = max(dp[1][i][j],dp[0][i][j]+1);
+                    dp[1][i][j] = max(dp[1][i][j],dp[0][i][j]);
                 }
             }
             Rep(i,0,m){
                 Rep(j,0,m){
                     dp[0][i][j] = dp[1][i][j];
+                    dp[1][i][j] = 0;
                 }
             }
         }

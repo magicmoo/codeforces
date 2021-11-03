@@ -13,36 +13,20 @@ using namespace std;
 typedef long long ll;
 const double PI = acos(-1.0);
 const int INF = 0x3f3f3f3f;
-const int maxn = 505;
+const int maxn = 1e6+5;
 int a[maxn],b[maxn];
-map<pair<int,int>,int> s;
 int main(){
     IOS;
-    int n;
+    int n,m;
     CAS {
-        cin>>n;
+        cin>>n>>m;
         Rep(i,1,n) cin>>a[i];
-        Rep(i,1,n) cin>>b[i];
-        if(n%2==1 && a[n/2+1]!=b[n/2+1]){
-            cout<<"NO\n";
-            continue;
+        Rep(i,1,m) cin>>b[i];
+        sort(b+1,b+1+n);
+        int ans = 0;
+        Rep(i,1,n){
+            if()
         }
-        s.clear();
-        Rep(i,1,n/2){
-            s[{a[i],a[n-i+1]}]++;
-        }
-        bool flag = 1;
-        Rep(i,1,n/2){
-            if(s[{b[i],b[n-i+1]}]){
-                s[{b[i],b[n-i+1]}]--;
-            }else if(s[{b[n-i+1],b[i]}]){
-                s[{b[n-i+1],b[i]}]--;
-            }else{
-                flag = 0;
-                break;
-            }
-        }
-        YON;
     }
     return 0;
 }

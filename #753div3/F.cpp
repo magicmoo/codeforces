@@ -15,43 +15,66 @@ const double PI = acos(-1.0);
 const int INF = 0x3f3f3f3f;
 const int maxn = 2e3+5;
 char a[maxn][maxn];
-int dp[maxn][maxn];
-pair<int,int> st[maxn][maxn];
+int dp[maxn][maxn],book[maxn][maxn];
 int wx[4] = {0,0,1,-1};
 int wy[4] = {1,-1,0,0};
 char fx[4] = {'R','L','D','U'};
-int n,m;
-void dfs(int x,int y,int lx,int ly,int len){
-    if(dp[x][y]) return;
-    dp[x][y] = 1;
-    st[x][y] = {0,0};
-    int tx=x,ty=y;
-    if(a[x][y]=='R') ty++;
-    else if(a[x][y]=='L') ty--;
-    else if(a[x][y]=='D') tx++;
-    else tx--;
-    if(tx<=0 || tx>n || ty<=0 || ty>m){
-        st[x][y] = {x,y};
-        dp[x][y] = len;
-        return;
-    }
-    if(dp[tx][ty]){
-        if(st[tx][ty]==make_pair(0,0)){
-            st[x][y] = {lx,ly};
-            dp[x][y] = len;
-        }else{
-            st[x][y] = st[tx][ty];
-            dp[x][y] = 1+dp[tx][ty];
+int n,m,len;
+void nxt(int& x,int& y){
+    if(a[x][y]=='R') y++;
+    else if(a[x][y]=='L') y--;
+    else if(a[x][y]=='D') x++;
+    else x--;
+}
+void dfs(){
+    queue<pair<int,int>> q;
+    Rep(i,1,n){
+        Rep(j,1,m){
+            q.push({i,j});
         }
-        return;
     }
-    dfs(tx,ty,x,y,len+1);
-    if(st[tx][ty]==make_pair(x,y)){
-        st[x][y] = {lx,ly};
-        dp[x][y] = len;
-    }else{
-        st[x][y] = st[tx][ty];
-        dp[x][y] = 1+dp[tx][ty];
+    while(!q.empty()){
+        int x=q.front().first,y=q.front().second;
+        q.pop();    
+        if(dp[x][y]) continue;
+        int tx=x,ty=y;
+        int len = 0,sum = 0;
+        int tempx = x,tempy = y;
+        while(!book[tx][ty] && !dp[tx][ty]){
+            if(tx<=0 || tx>n || ty<=0 || ty>m){
+                break;
+            }
+            book[tx][ty] = ++len;
+            tempx = tx,tempy = ty;
+            nxt(tx,ty);
+        }
+        if(tx<=0 || tx>n || ty<=0 || ty>m){
+            while(!(tx==x && ty==y)){
+                book[x][y] = 0;
+                dp[x][y] = len--;
+                nxt(x,y);
+            }
+        }else if(dp[tx][ty]){
+            book[tx][ty] = 0;
+            while(!(tx==x && ty==y)){
+                book[x][y] = 0;
+                dp[x][y] = dp[tx][ty]+len--;
+                nxt(x,y);
+            }
+        }else{
+            int num = dp[tempx][tempy] = book[tempx][tempy]-book[tx][ty]+1;
+            book[tempx][tempy] = 0;
+            while(!(tx==tempx && ty==tempy)){
+                book[tx][ty] = 0;
+                dp[tx][ty] = num;
+                nxt(tx,ty);
+            }
+            while(!dp[x][y]){
+                book[x][y] = 0;
+                dp[x][y] = len--;
+                nxt(x,y);
+            }
+        }
     }
 }
 int main(){
@@ -65,11 +88,12 @@ int main(){
             }
         }
         int r,c,d = 0;
+        dfs();
         Rep(i,1,n){
             Rep(j,1,m){
-                dfs(i,j,0,0,1);
+                len = 0;
                 if(dp[i][j] > d){
-                    r = st[i][j].first; c = st[i][j].second;
+                    r = i; c = j;
                     d = dp[i][j];
                 }
             }

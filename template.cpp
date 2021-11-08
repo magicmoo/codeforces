@@ -5,6 +5,7 @@ using namespace std;
             Rep(__,1,CASE)
 #define YON if(flag) cout<<"YES\n"; \
             else cout<<"NO\n";
+#define PII pair<int,int>
 #define Rep(i,x,y) for(int i=(x);i<=(y);i++)
 #define rep(i,x,y) for(int i=(x);i<(y);i++)
 #define Dep(i,x,y) for(int i=(x);i>=(y);i--)

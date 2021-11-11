@@ -26,14 +26,18 @@ int main(){
             cnt[j] += (a[i]>>j)&1;
         }
     }
+    int ans = 0;
     Rep(i,1,n){
+        int tmp = 0,now = 1;
         rep(j,0,30){
             if((a[i]>>j)&1){
-                
+                if((n-cnt[j])&1) ans += now;
+            }else{
+                if(cnt[j]&1) ans += now;
             }
+            now *= 2;
         }
     }
-    int ans = 0,now = 1,last=0;
     cout<<ans<<"\n";
     return 0;
 }
